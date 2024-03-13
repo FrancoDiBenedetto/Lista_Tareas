@@ -57,9 +57,18 @@ header {
     justify-content: center !important;
     align-items: center !important;
     padding: 50px;
-    background-color: rgb(147, 135, 135);
+    background-color: rgb(72, 89, 125);
     margin: 100px auto;
     border-radius: .2rem;
     box-sizing: border-box;
+    gap: 1rem;
+    color: rgb(228, 221, 211);
 
+}
+
+.botones {
+
+    padding: 5px;
+    background-color: whitesmoke;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
