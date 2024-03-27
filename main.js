@@ -1,26 +1,6 @@
-
-// Definir variable para almacenar las tareas
-
-// let listaTareas = "";
-
 let listaTareas = [];
 
-// // Función para agregar una tarea a la lista
-// function agregarTarea() {
-//     let nuevaTarea = prompt("Ingrese la nueva tarea:");
-//     if (nuevaTarea !== null) {
-//         if (listaTareas === "") {
-//             listaTareas += nuevaTarea;
-//         } else {
-//             listaTareas += "\n" + nuevaTarea;
-//         }
-//     }
-// }
-
-
-//2
-
-
+// Función para agregar una tarea
 function agregarTarea() {
     let nombre = prompt("Ingrese el nombre de la tarea:");
     let descripcion = prompt("Ingrese la descripción de la tarea:");
@@ -32,23 +12,11 @@ function agregarTarea() {
         completada: false
     };
     listaTareas.push(tarea);
+    actualizarStorage(); // Actualizar el almacenamiento local
     alert("Tarea agregada con éxito.");
 }
 
-// Función para eliminar una tarea de la lista
-// function eliminarTarea() {
-//     let tareaEliminar = prompt("Ingrese la tarea a eliminar:");
-//     if (tareaEliminar !== null) {
-//         if (listaTareas.includes(tareaEliminar)) {
-//             listaTareas = listaTareas.replace(tareaEliminar, "").trim();
-//         } else {
-//             alert("La tarea especificada no existe en la lista.");
-//         }
-//     }
-// }
-
-//mejora de la funcion eliminarTarea:
-
+// Función para eliminar una tarea
 function eliminarTarea() {
     let mensaje = "Seleccione la tarea que desea eliminar:\n";
     listaTareas.forEach((tarea, index) => {
@@ -61,6 +29,7 @@ function eliminarTarea() {
             let confirmacion = confirm(`Seguro que desea eliminar la tarea: ${listaTareas[tareaIndex].nombre}?`);
             if (confirmacion) {
                 listaTareas.splice(tareaIndex, 1);
+                actualizarStorage(); // Actualizar el almacenamiento local
                 alert("Tarea eliminada con éxito.");
             } else {
                 alert("Eliminación de tarea cancelada.");
@@ -71,6 +40,7 @@ function eliminarTarea() {
     }
 }
 
+// Función para editar una tarea
 function editarTarea() {
     let lista = listaTareas.map((tarea, index) => {
         return index + ": " + tarea.nombre;
@@ -85,21 +55,14 @@ function editarTarea() {
         let nuevaDescripcion = prompt("Ingrese la nueva descripción de la tarea:");
         listaTareas[indice].nombre = nuevaNombre;
         listaTareas[indice].descripcion = nuevaDescripcion;
+        actualizarStorage(); // Actualizar el almacenamiento local
         alert("Tarea editada con éxito.");
     } else {
         alert("Índice de tarea no válido.");
     }
 }
 
-// Función para mostrar la lista de tareas actualizada
-// function mostrarTareas() {
-//     if (listaTareas === "") {
-//         alert("No hay tareas en la lista.");
-//     } else {
-//         alert("Lista de tareas:\n" + listaTareas);
-//     }
-// }
-
+// Función para mostrar la fecha de creación de una tarea
 function mostrarFechaCreacionTarea() {
     let mensaje = "Seleccione la tarea de la cual desea ver la fecha de creación:\n";
     listaTareas.forEach((tarea, index) => {
@@ -117,16 +80,7 @@ function mostrarFechaCreacionTarea() {
     }
 }
 
-// Función para mostrar la lista de tareas actualizada
-
-// function mostrarTareas() {
-//     if (listaTareas === "") {
-//         alert("No hay tareas en la lista.");
-//     } else {
-//         alert("Lista de tareas:\n" + listaTareas);
-//     }
-// }
-
+// Función para mostrar la lista de tareas
 function mostrarTareas() {
     let mensaje = "Lista de Tareas:\n";
     listaTareas.forEach((tarea, index) => {
@@ -135,65 +89,88 @@ function mostrarTareas() {
     alert(mensaje);
 }
 
+function filtrarTareasCompletadas(completadas) {
+    let tareasFiltradas = listaTareas.filter(tarea => tarea.completada === completadas);
+    if (tareasFiltradas.length === 0) {
+        alert(`No hay tareas ${completadas ? 'completadas' : 'pendientes'}.`);
+    } else {
+        let mensaje = `Tareas ${completadas ? 'completadas' : 'pendientes'}:\n`;
+        tareasFiltradas.forEach((tarea, index) => {
+            mensaje += `${index + 1}. ${tarea.nombre} - ${tarea.descripcion}\n`;
+        });
+        alert(mensaje);
+    }
+}
 
+function mostrarTareasPendientes() {
+    let tareasPendientes = listaTareas.filter(tarea => !tarea.completada);
+    mostrarListaTareas("Tareas Pendientes", tareasPendientes);
+}
+
+function mostrarTareasCompletadas() {
+    let tareasCompletadas = listaTareas.filter(tarea => tarea.completada);
+    mostrarListaTareas("Tareas Completadas", tareasCompletadas);
+}
+
+function mostrarListaTareas(titulo, tareas) {
+    let mensaje = `${titulo}:\n`;
+    tareas.forEach((tarea, index) => {
+        mensaje += `${index + 1}. ${tarea.nombre} - ${tarea.descripcion}\n`;
+    });
+    alert(mensaje);
+}
+
+function marcarComoCompletada(index) {
+    listaTareas[index].completada = !listaTareas[index].completada;
+    alert(`La tarea "${listaTareas[index].nombre}" ha sido marcada como ${listaTareas[index].completada ? "completada" : "pendiente"}.`);
+}
+
+function marcarTareaCompletada() {
+    let mensaje = "Seleccione la tarea que desea marcar como completada:\n";
+    listaTareas.forEach((tarea, index) => {
+        if (!tarea.completada) {
+            mensaje += `${index}. ${tarea.nombre}\n`;
+        }
+    });
+    let tareaIndex = prompt(mensaje);
+    if (tareaIndex !== null) {
+        tareaIndex = parseInt(tareaIndex);
+        if (!isNaN(tareaIndex) && tareaIndex >= 0 && tareaIndex < listaTareas.length) {
+            listaTareas[tareaIndex].completada = true;
+            alert(`La tarea "${listaTareas[tareaIndex].nombre}" ha sido marcada como completada.`);
+        } else {
+            alert("Índice de tarea inválido.");
+        }
+    }
+}
+
+// Función para actualizar el almacenamiento local con la lista de tareas
+function actualizarStorage() {
+    localStorage.setItem('listaTareas', JSON.stringify(listaTareas));
+}
 
 // Función principal
 // function main() {
-
-//     alert("Bienvenido a la lista de tareas virtuales. Aquí podrás almacenar tus tareas y tener tus días más organizados.");
-
-//     let opcion;
-//     do {
-//         opcion = prompt("Selecciona una opción:\n1. Agregar tarea\n2. Eliminar tarea\n3. Mostrar tareas\n4. Salir");
-
-//         switch (opcion) {
-//             case "1":
-//                 agregarTarea();
-//                 break;
-//             case "2":
-//                 eliminarTarea();
-//                 break;
-//             case "3":
-//                 mostrarTareas();
-//                 break;
-//             case "4":
-//                 alert("Saliendo del programa...");
-//                 break;
-//             default:
-//                 alert("Opción no válida. Por favor, selecciona una opción válida.");
-//         }
-//     } while (opcion !== "4");
+//     // Obtener la lista de tareas del almacenamiento local al cargar la página
+//     listaTareas = JSON.parse(localStorage.getItem('listaTareas')) || [];
+//     document.getElementById("agregarBtn").addEventListener("click", agregarTarea);
+//     document.getElementById("eliminarBtn").addEventListener("click", eliminarTarea);
+//     document.getElementById("editarBtn").addEventListener("click", editarTarea);
+//     document.getElementById("mostrarBtn").addEventListener("click", mostrarTareas);
+//     document.getElementById("mostrarFechaBtn").addEventListener("click", mostrarFechaCreacionTarea);
 // }
 
-// // Iniciar el programa
-// main();
-
-
 function main() {
-    let opcion;
-    do {
-        opcion = prompt("Seleccione una opción:\n1. Agregar tarea\n2. Eliminar tarea\n3. Editar tarea\n4. Mostrar fecha de creación\n5. Mostrar tareas\n6. Salir");
-        switch (opcion) {
-            case "1":
-                agregarTarea();
-                break;
-            case "2":
-                eliminarTarea();
-                break;
-            case "3":
-                editarTarea();
-                break;
-            case "4":
-                mostrarFechaCreacion();
-                break;
-            case "5":
-                mostrarTareas();
-                break;
-            case "6":
-                alert("Saliendo del programa...");
-                break;
-            default:
-                alert("Opción no válida. Por favor, selecciona una opción válida.");
-        }
-    } while (opcion !== "6");
+    // Obtener la lista de tareas del almacenamiento local al cargar la página
+    listaTareas = JSON.parse(localStorage.getItem('listaTareas')) || [];
+    document.getElementById("agregarBtn").addEventListener("click", agregarTarea);
+    document.getElementById("eliminarBtn").addEventListener("click", eliminarTarea);
+    document.getElementById("editarBtn").addEventListener("click", editarTarea);
+    document.getElementById("mostrarBtn").addEventListener("click", mostrarTareas);
+    document.getElementById("mostrarFechaBtn").addEventListener("click", mostrarFechaCreacionTarea);
+    document.getElementById("mostrarPendientesBtn").addEventListener("click", mostrarTareasPendientes);
+    document.getElementById("mostrarCompletadasBtn").addEventListener("click", mostrarTareasCompletadas);
 }
+
+// Iniciar el programa
+main();

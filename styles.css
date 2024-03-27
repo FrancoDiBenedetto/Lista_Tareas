@@ -56,18 +56,32 @@ header {
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
-    padding: 50px;
+    padding: 30px;
     background-color: rgb(72, 89, 125);
-    margin: 100px auto;
+    margin: 10px auto;
     border-radius: .2rem;
     box-sizing: border-box;
     gap: 1rem;
     color: rgb(228, 221, 211);
+}
 
+.caja2 {
+    height: 200px;
+    width: 30%;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 10px;
+    background-color: rgb(128, 149, 195);
+    margin: 10px auto;
+    border-radius: .2rem;
+    box-sizing: border-box;
+    gap: 1rem;
+    color: rgb(228, 221, 211);
 }
 
 .botones {
-
     padding: 5px;
     background-color: whitesmoke;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

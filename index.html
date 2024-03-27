@@ -24,6 +24,17 @@
             <button class="botones" onclick="mostrarTareas()">Mostrar tareas</button>
             <button class="botones" onclick="mostrarFechaCreacionTarea()">Mostrar fecha de creación</button>
         </div>
+
+        <div class="caja2">
+            <button class="botones" onclick="marcarTareaCompletada()">Check List</button>
+            <!-- <button class="botones" onclick="filtrarTareas(true)">Mostrar tareas completadas</button>
+            <button class="botones" onclick="filtrarTareas(false)">Mostrar tareas pendientes</button> -->
+            <button class="botones" id="mostrarPendientesBtn" onclick="mostrarTareasPendientes()">Tareas
+                Pendientes</button>
+            <button class="botones" id="mostrarCompletadasBtn" onclick="mostrarTareasCompletadas()">Tareas
+                Completadas</button>
+        </div>
+        <div id="listaTareas" class="lista-tareas"></div>
     </main>
     <script src="main.js"></script>
 </body>
